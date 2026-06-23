@@ -215,6 +215,13 @@
         <h2>Featured Publications</h2>
         <ul class="publications">
             <li class="publication-item">
+                <div class="publication-title" onclick="openPaperPage('conversational-personalization')">
+                    Personalizing MLLMs via Reinforced Multimodal Reference Game
+                    <span class="featured-tag">FEATURED</span>
+                </div>
+                <div class="publication-venue">ECCV 2026</div>
+            </li>
+            <li class="publication-item">
                 <div class="publication-title" onclick="openPaperPage('training-free-personalization')">
                     Training-Free Personalization via Retrieval and Reasoning on Fingerprints
                     <span class="featured-tag">FEATURED</span>
@@ -238,7 +245,9 @@
         function openPaperPage(paperId) {
             // For now, this will show an alert. You can replace this with actual navigation
             // to individual paper pages once they're created
-            if (paperId === 'training-free-personalization') {
+            if (paperId === 'conversational-personalization') {
+                window.location.href = 'papers/conversational-personalization.html';
+            } else if (paperId === 'training-free-personalization') {
                 window.location.href = 'papers/training-free-personalization.html';
             } else if (paperId === 'one-vlm-continual') {
                 window.location.href = 'papers/one-vlm-continual.html';

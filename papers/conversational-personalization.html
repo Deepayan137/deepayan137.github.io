@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalizing MLLMs via Reinforced Multimodal Reference Game</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <!-- Bulma CSS Framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Academicons for arXiv -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Google Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+
+        .hero {
+            background: white;
+            color: #2c3e50;
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        .hero .hero-body {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .hero .columns {
+            margin: 0 !important;
+        }
+
+        .hero .column {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .hero .title {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .publication-authors {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .publication-authors a {
+            color: #3273dc;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .publication-authors a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .publication-links {
+            margin-top: 1.5rem;
+        }
+
+        .publication-links .button {
+            margin: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .publication-links .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .publication-links .button.is-disabled,
+        .publication-links .button[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .venue-badge {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin: 1rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section .title {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .abstract-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .abstract-container p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 1rem;
+        }
+
+        .key-contributions {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+            margin: 2rem 0;
+        }
+
+        .key-contributions h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .key-contributions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-contributions li {
+            margin-bottom: 0.8rem;
+            padding-left: 2rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .key-contributions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .method-overview {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .method-overview h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .figure-container {
+            text-align: center;
+            margin: 2rem 0;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .figure-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .figure-caption {
+            font-size: 0.95rem;
+            color: #666;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .reference-game-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .reference-game-highlight h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .citation-container {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 2rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #2980b9;
+        }
+
+        .back-link {
+            margin-bottom: 2rem;
+        }
+
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #2980b9;
+        }
+
+        .hero-teaser {
+            background: white;
+            padding: 1rem 0;
+            margin-top: 0;
+        }
+
+        .hero-teaser .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        hr {
+            margin: 0 !important;
+        }
+
+        @media (max-width: 768px) {
+            .hero .title {
+                font-size: 2rem;
+            }
+
+            .publication-links .button {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container is-max-desktop" style="padding: 2rem 1rem;">
+        <div class="back-link">
+            <a href="../index.html">← Back to Homepage</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">Personalizing MLLMs via Reinforced Multimodal Reference Game</h1>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://deepayan137.github.io/" target="_blank">Deepayan Das</a>,</span>
+                            <span class="author-block">
+                                <a href="https://mancinimassimiliano.github.io/" target="_blank">Massimiliano Mancini</a>,</span>
+                            <span class="author-block">
+                                <a href="https://scholar.google.com/citations?user=xf1T870AAAAJ&hl=en" target="_blank">Elisa Ricci</a>
+                            </span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">University of Trento</span>
+                        </div>
+
+                        <div class="venue-badge">ECCV 2026</div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark is-disabled" disabled title="Coming soon">
+                                        <span class="icon">
+                                            <i class="ai ai-arxiv"></i>
+                                        </span>
+                                        <span>arXiv</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark is-disabled" disabled title="Coming soon">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <h2 class="title is-3">Key Contributions</h2>
+            <div class="key-contributions">
+                <h3>Main Contributions</h3>
+                <ul>
+                    <li>Novel <strong>Reinforced Reference Game (RRG)</strong> framework that trains MLLMs to generate discriminative, invariant concept descriptions</li>
+                    <li>MLLM plays both <strong>speaker</strong> (describing) and <strong>listener</strong> (identifying) roles in a contrastive game setting</li>
+                    <li>Verifiable contrastive reward over <strong>hard positives</strong> (different views of same concept) and <strong>hard negatives</strong> (visually similar but different concepts)</li>
+                    <li>State-of-the-art across multiple tasks on <strong>three personalization benchmarks</strong></li>
+                    <li>Generalizes to <strong>unseen domains</strong> and outperforms personalization-specific RL frameworks</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div>
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="abstract-container">
+                        <p>
+                            Personalizing Multimodal Large Language Models (MLLMs) aims to recognize users' unique concepts from visual data and provide personalized responses. Although prior work has shown the benefit of concept descriptions and reasoning for this task, MLLM descriptions often include information, such as state and context, that does not help and may in fact hinder the unique identification of the target concept among other visually similar items.
+                        </p>
+                        <p>
+                            Effective descriptions of personal concepts should instead be accurate, discriminative, and free of distracting details. To achieve such descriptions, we introduce <strong>Reinforced Reference Game (RRG)</strong>, a learning framework that promotes discriminative descriptions through a novel reinforced multimodal reference game.
+                        </p>
+                        <p>
+                            The MLLM plays both the roles of speaker and listener in a contrastive game setting, whose goal is to effectively communicate discriminative information about a target concept. Our approach formulates a verifiable contrastive reward over hard positives (dissimilar views of the same concept) and hard negatives (visually similar but different concepts).
+                        </p>
+                        <p>
+                            Empirically, RRG achieves state-of-the-art across multiple tasks on three personalization benchmarks. RRG generalizes to unseen domains and outperforms existing methods based on concept descriptions and personalization-specific RL frameworks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-max-desktop">
+            <h2 class="title is-3">Method Overview</h2>
+            <div class="reference-game-highlight">
+                <h3>The Reinforced Reference Game</h3>
+                <p>We frame personalization as a <strong>reference game</strong>. The MLLM acts as both the <em>speaker</em> — generating a description of a target concept — and the <em>listener</em> — identifying the target concept from a set of candidates using that description. This contrastive game encourages the speaker to produce descriptions that are distinctive and invariant, going beyond standard dense captioning toward attributes that uniquely identify the personal concept.</p>
+            </div>
+
+            <div class="method-overview">
+                <h3>RRG: Reinforced Reference Game Framework</h3>
+                <p>Our approach formulates a <strong>verifiable contrastive reward</strong> over two challenging settings: <strong>hard positives</strong> — dissimilar views of the same concept that must be correctly associated — and <strong>hard negatives</strong> — visually similar but distinct concepts that must be differentiated. This reward signal drives the MLLM to learn discriminative, context-free concept descriptions through reinforcement learning.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop">
+            <h2 class="title is-3">Citation</h2>
+            <div class="citation-container">
+                <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+                <pre id="citation-text">@inproceedings{das2026rrg,
+  title={Personalizing {MLLMs} via Reinforced Multimodal Reference Game},
+  author={Das, Deepayan and Mancini, Massimiliano and Ricci, Elisa},
+  booktitle={European Conference on Computer Vision (ECCV)},
+  year={2026}
+}</pre>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered" style="margin-top: 20px;">
+                <div class="column is-8">
+                    <div class="content has-text-centered">
+                        <p>
+                            This website is licensed under a
+                            <a href="http://creativecommons.org/licenses/by-sa/4.0/" rel="license" target="_blank">
+                                Creative Commons Attribution-ShareAlike 4.0 International License
+                            </a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard() {
+            const citationText = document.getElementById('citation-text').textContent;
+            navigator.clipboard.writeText(citationText).then(function() {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#27ae60';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#3498db';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
